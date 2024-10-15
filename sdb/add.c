@@ -6,8 +6,8 @@ void Add_new_record(SDB **ptr){
 
 	printf("\tEnter Your Name : ");
 	scanf(" %[^\n]",temp->name);
-	printf("\tEnter Your Persentage : ");
-	scanf("%d",&temp->persentage);
+	printf("\tEnter Your Percentage : ");
+	scanf("%d",&temp->percentage);
 
 	if(*ptr==0){
 		*ptr = temp;
@@ -16,7 +16,7 @@ void Add_new_record(SDB **ptr){
 	}else{
 
 		SDB *last=*ptr;
-		while(last->!=0) last = last->next;
+		while(last->next!=0) last = last->next;
 
 		temp->rollno = (last->rollno + 1);
 		temp->next = last->next;
