@@ -80,8 +80,8 @@ int main(int argc, char *argv[]) {
     find_macro(&head, exe_file);
     remove_cmd(exe_file);
     replace_macro(argv[1],exe_file,head);
-    print(head);
-    printf("%s\n", exe_file);
+    //print(head);
+    //printf("%s\n", exe_file);
 
     free(file_storage);
     free(header_name);
@@ -139,9 +139,13 @@ void remove_cmd(char *file) {
     exe_file[0] = '\0';
 
     for (i = 0; file[i]; i++) {
+	while(file[i]=='\t') i++; 
+	while (file[i] == '\n' && file[i+1] == '\n') i++;
         if (strncmp(file + i, "//", 2) == 0) {
+            i++;
             while (file[i++] != '\n'); i++;
         } else if (strncmp(file + i, "/*", 2) == 0) {
+            i+=2;
             while (strncmp(file + i, "*/", 2) != 0) {
                 i++;
             }
@@ -150,8 +154,6 @@ void remove_cmd(char *file) {
             i += 8;
             while (file[i++] != '\n'); i++;
         } 
-	while(file[i]=='\t') i++;
-	 
         exe_file[j++] = file[i];
     }
 
@@ -231,7 +233,7 @@ void replace_macro(char *file_n, char *file, PRE *macro) {
             i += 8;
 
             while (file[i] != '{') i++;
-            fputs("int main {", fd);
+            fputs("int main ", fd);
 
             for (; file[i]; i++) {
                 PRE *current_macro = macro;
@@ -259,3 +261,4 @@ void replace_macro(char *file_n, char *file, PRE *macro) {
 
     fclose(fd);
 }
+
