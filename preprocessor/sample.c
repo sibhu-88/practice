@@ -3,8 +3,10 @@
 
 #define pf printf
 #define max 1+2
+#define sf scanf
 
 int main(){
-
-	pf("Printed-->> %d\n",max);
+	char d;
+	sf("%c",&d);
+	pf("Printed max -->> %d\n",max);
 }
