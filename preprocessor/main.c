@@ -135,32 +135,57 @@ void file_add(char *file_n, char file, char **exe_file) {
 
 void remove_cmd(char *file) {
     long i, j = 0;
-    char *exe_file = malloc(350000);
-    exe_file[0] = '\0';
-
-    for (i = 0; file[i]; i++) {
-	while(file[i]=='\t') i++; 
-	while (file[i] == '\n' && file[i+1] == '\n') i++;
-        if (strncmp(file + i, "//", 2) == 0) {
-            i++;
-            while (file[i++] != '\n'); i++;
-        } else if (strncmp(file + i, "/*", 2) == 0) {
-            i+=2;
-            while (strncmp(file + i, "*/", 2) != 0) {
-                i++;
-            }
-            i += 2;
-        } else if (!strncmp("#include", file + i, 8)) {
-            i += 8;
-            while (file[i++] != '\n'); i++;
-        } 
-        exe_file[j++] = file[i];
+    size_t length = strlen(file);
+    char *exe_file = malloc(length + 1);
+    if (!exe_file) {
+        perror("Failed to allocate memory for exe_file");
+        return;
     }
 
+    for (i = 0; i < length; i++) {
+        while (file[i] == '\t') i++;
+
+        if (file[i] == '\n' && file[i + 1] == '\n') {
+            continue;
+        }
+
+        if (strncmp(file + i, "//", 2) == 0) {
+            while (file[i] != '\n' && file[i] != '\0') {
+                i++;
+            }
+            continue;
+        }
+        
+        if (strncmp(file + i, "/*", 2) == 0) {
+            i += 2;
+            while (!(file[i] == '*' && file[i + 1] == '/') && file[i] != '\0') {
+                i++;
+            }
+            i += 2; 
+            continue;
+        }
+
+        if (strncmp(file + i, "#include", 8) == 0) {
+            while (file[i] != '\n' && file[i] != '\0') {
+                i++;
+            }
+            continue;
+        }
+
+        if (strncmp(file + i, "#define", 7) == 0) {
+            while (file[i] != '\n' && file[i] != '\0') {
+                i++;
+            }
+            continue;
+        }
+        exe_file[j++] = file[i];
+    }
     exe_file[j] = '\0';
+
     strcpy(file, exe_file);
     free(exe_file);
 }
+
 
 void find_macro(PRE **macro, char *file) {
     long i, j;
@@ -238,10 +263,14 @@ void replace_macro(char *file_n, char *file, PRE *macro) {
             for (; file[i]; i++) {
                 PRE *current_macro = macro;
                 int macro_found = 0;
+		if(file[i] == '"'){
+		  fputc(file[i++], fd);
+		  while(file[i]!='"')  fputc(file[i++], fd);
+		  fputc(file[i++], fd);
+		}
 
                 while (current_macro) {
                     if (strncmp(file + i, current_macro->name, strlen(current_macro->name)) == 0) {
-			//if((file[i-1]!=' ' || file[i-1]!='\t') && (file[i+strlen(current_macro->name) + 1]!= ' ' || file[i+strlen(current_macro->name) + 1]!= '\t')) continue;
                         fputs(current_macro->def, fd);
                         i += strlen(current_macro->name) - 1;
                         macro_found = 1;
@@ -258,7 +287,5 @@ void replace_macro(char *file_n, char *file, PRE *macro) {
         }
         fputc(file[i], fd);
     }
-
     fclose(fd);
 }
-
