@@ -4,3 +4,4 @@ To install play commad in your ubuntu
 
 it will play both video and audio
 3) sudo apt-get install -y sox libsox-fmt-mp3 
+
