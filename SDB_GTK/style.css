@@ -1,0 +1,38 @@
+.default-button {
+    background-image: none;
+    background-color: rgb(102, 148, 247);
+    border-radius: 12px;
+    font-weight: bold;
+    color: white;
+    font-size: 16px;
+    padding: 6px 12px;
+    border: 2px solid #555;
+}
+
+.error-label {
+    color: red;
+    font-weight: bold;
+}
+
+.success-label {
+    color: green;
+    font-weight: bold;
+}
+
+.custom-menubar {
+    background-color: lightblue;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+    font-weight: bold;
+    color: black;
+    font-size: 16px;
+}
+
+label {
+    padding: 6px;
+}
+
+#content-area label {
+    border: 1px solid #ccc;
+    padding: 6px 10px;
+}
