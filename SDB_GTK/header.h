@@ -26,6 +26,7 @@ void apply_css(const gchar *css_data);
 gboolean clear_status_label(gpointer user_data);
 void clear_container(GtkWidget *container);
 gboolean check_login(GtkWidget *entry_user, GtkWidget *entry_pass, GtkWidget *status_label);
+gboolean check_data(GtkWidget *entry_name, GtkWidget *entry_per, GtkWidget *status_label);
 
 void add_new_record(SDB **ptr, const gchar *name, float percentage);
 

@@ -29,10 +29,11 @@
 }
 
 label {
-    padding: 6px;
+    font-size: 28px;
+    font-weight: bold;
 }
 
-#content-area label {
+/* #content-area label {
     border: 1px solid #ccc;
     padding: 6px 10px;
-}
+} */

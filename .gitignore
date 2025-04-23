@@ -1,2 +1,10 @@
 *.exe
 .vscode/
+*.o
+*.log
+*.tmp
+
+# Ignore all executable files
+*.out
+*.exe
+*.bin
