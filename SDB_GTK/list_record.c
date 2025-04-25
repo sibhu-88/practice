@@ -1,4 +1,7 @@
 #include"header.h"
+
+extern SDB *hptr;
+
 void on_list_clicked(GtkMenuItem *menuitem, gpointer user_data)
 {
     GtkWidget *content_area = GTK_WIDGET(user_data);

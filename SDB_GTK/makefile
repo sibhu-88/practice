@@ -7,7 +7,7 @@ LIBS = `pkg-config --libs gtk+-3.0`
 EXECUTABLE = studentdb
 
 # Source Files
-SOURCE = main.c menu.c add_record.c add_data.c list_record.c modify_record.c sort_record.c save_record.c
+SOURCE = main.c menu.c add_data.c modify_record.c sort_record.c save_record.c
 
 # Object Files
 OBJECTS = $(SOURCE:.c=.o)

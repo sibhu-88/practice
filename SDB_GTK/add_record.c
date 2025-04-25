@@ -1,42 +1,48 @@
 #include"header.h"
 
+SDB *hptr = NULL;
+
+gboolean check_data(GtkWidget *entry_name, GtkWidget *entry_per, GtkWidget *status_label)
+{
+    const gchar *name = gtk_entry_get_text(GTK_ENTRY(entry_name));
+    const gchar *percentage = gtk_entry_get_text(GTK_ENTRY(entry_per));
+    GtkStyleContext *context = gtk_widget_get_style_context(status_label);
+
+    if (g_strcmp0(name, "") == 0 || g_strcmp0(percentage, "") == 0)
+    {
+        gtk_label_set_text(GTK_LABEL(status_label), "Please fill all fields.");
+        gtk_style_context_remove_class(context, "success-label");
+        gtk_style_context_add_class(context, "error-label");
+        return FALSE;
+    }
+    else
+    {
+        gtk_label_set_text(GTK_LABEL(status_label), "Student added successfully!");
+        gtk_style_context_remove_class(context, "error-label");
+        gtk_style_context_add_class(context, "success-label");
+        return TRUE;
+    }
+}
+
 void on_submit_click(GtkWidget *button, gpointer user_data)
 {
     GtkWidget **student_data = (GtkWidget **)user_data;
     const gchar *name = gtk_entry_get_text(GTK_ENTRY(student_data[0]));
     float per = atof(gtk_entry_get_text(GTK_ENTRY(student_data[1])));
 
-    add_new_record(&hptr, name, per);
-    gtk_label_set_text(GTK_LABEL(student_data[2]), "Student added successfully!");
+    gboolean status = check_data(student_data[0],student_data[1],student_data[2]);
+
+    if (status)
+    {
+        add_new_record(&hptr, name, per);
+    }
 }
-
-// gboolean check_data(GtkWidget *entry_name, GtkWidget *entry_per, GtkWidget *status_label)
-// {
-//     const gchar *name = gtk_entry_get_text(GTK_ENTRY(entry_user));
-//     const gchar *percentage = gtk_entry_get_text(GTK_ENTRY(entry_pass));
-//     GtkStyleContext *context = gtk_widget_get_style_context(status_label);
-
-//     if (g_strcmp0(name, "") == 0 || g_strcmp0(percentage, "") == 0)
-//     {
-//         gtk_label_set_text(GTK_LABEL(status_label), "Please fill all fields.");
-//         gtk_style_context_remove_class(context, "success-label");
-//         gtk_style_context_add_class(context, "error-label");
-//         return FALSE;
-//     }
-//     else
-//     {
-//         gtk_label_set_text(GTK_LABEL(status_label), "Login Successful!");
-//         gtk_style_context_remove_class(context, "error-label");
-//         gtk_style_context_add_class(context, "success-label");
-//         return TRUE;
-//     }
-// }
 
 void on_add_clicked(GtkMenuItem *menuitem, gpointer user_data)
 {
     GtkWidget *content_area = GTK_WIDGET(user_data);
-
     GtkWidget *add_box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
+    clear_container(add_box);
 
     GtkWidget *grid = gtk_grid_new();
     gtk_grid_set_row_spacing(GTK_GRID(grid), 10);

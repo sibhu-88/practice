@@ -12,20 +12,75 @@ void apply_css_from_file(const gchar *file_path)
     g_object_unref(provider);
 }
 
-void on_button_click(GtkWidget *button, gpointer user_data)
+gboolean clear_status_label(gpointer user_data)
 {
+    GtkWidget **widget = (GtkWidget **)user_data;
+    gtk_entry_set_text(GTK_ENTRY(widget[0]), "");
+    gtk_entry_set_text(GTK_ENTRY(widget[1]), "");
+    gtk_label_set_text(GTK_LABEL(widget[2]), "");
+
+   // g_free(widget);
+    return G_SOURCE_REMOVE;
+}
+
+void clear_container(GtkWidget *container)
+{
+    GList *children, *iter;
+
+    children = gtk_container_get_children(GTK_CONTAINER(container));
+    for (iter = children; iter != NULL; iter = g_list_next(iter))
+    {
+        gtk_widget_destroy(GTK_WIDGET(iter->data));
+    }
+    g_list_free(children);
+}
+
+gboolean check_login(GtkWidget *entry_user, GtkWidget *entry_pass, GtkWidget *status_label)
+{
+    GtkWidget **widget = g_new(GtkWidget *, 3);
+    widget[0] = entry_user;
+    widget[1] = entry_pass;
+    widget[2] = status_label;
+    
+    const gchar *username = gtk_entry_get_text(GTK_ENTRY(entry_user));
+    const gchar *password = gtk_entry_get_text(GTK_ENTRY(entry_pass));
+    GtkStyleContext *context = gtk_widget_get_style_context(status_label);
+
+    if (g_strcmp0(username, "") == 0 || g_strcmp0(password, "") == 0)
+    {
+        gtk_label_set_text(GTK_LABEL(status_label), "Please fill all fields.");
+        gtk_style_context_remove_class(context, "success-label");
+        gtk_style_context_add_class(context, "error-label");
+    }
+    else if (strcmp(username, "vector") == 0 && strcmp(password, "123") == 0)
+    {
+        gtk_label_set_text(GTK_LABEL(status_label), "Login Successful!");
+        gtk_style_context_remove_class(context, "error-label");
+        gtk_style_context_add_class(context, "success-label");
+        return TRUE;
+    }
+    else
+    {
+        gtk_label_set_text(GTK_LABEL(status_label), "Invalid username or password");
+        gtk_style_context_remove_class(context, "success-label");
+        gtk_style_context_add_class(context, "error-label");
+    }
+
+    g_timeout_add_seconds(1, clear_status_label, widget);
+    return FALSE;
+}
+
+void on_button_click(GtkWidget *button, gpointer user_data){
     GtkWidget **widget = user_data;
     gboolean success = check_login(widget[0], widget[1], widget[2]);
 
-    if (success)
-    {
-
-        clear_container(widget[3]);
-        desktop(widget[3]);
-
-        gtk_widget_show_all(widget[3]);
+    if (success) {
+        GtkWidget *box = widget[3];  // box was passed as 4th pointer
+        clear_container(box);        // clear login UI
+        desktop(box);                // show main app UI
     }
 }
+
 
 void on_activate(GtkApplication *app, gpointer user_data)
 {
@@ -47,7 +102,7 @@ void on_activate(GtkApplication *app, gpointer user_data)
     gtk_widget_set_hexpand(grid, TRUE);            // allow horizontal expansion
     gtk_widget_set_vexpand(grid, TRUE);            // allow vertical expansion
 
-   // gtk_box_pack_start(GTK_BOX(box), grid, FALSE, TRUE, 10);
+    //gtk_box_pack_start(GTK_BOX(box), grid, FALSE, TRUE, 10);
 
     GtkWidget *username = gtk_label_new("User Name:");
     GtkWidget *password = gtk_label_new("Password:");
