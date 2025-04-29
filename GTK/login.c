@@ -1,12 +1,15 @@
 #include "header.h"
 
-gboolean clear_status_label(gpointer user_data) {
-    if (!user_data) {
+gboolean clear_status_label(gpointer user_data)
+{
+    if (!user_data)
+    {
         g_printerr("clear_status_label: user_data is NULL\n");
         return G_SOURCE_REMOVE;
     }
     GtkWidget **widget = (GtkWidget **)user_data;
-    if (!widget[0] || !widget[1] || !widget[2]) {
+    if (!widget[0] || !widget[1] || !widget[2])
+    {
         g_printerr("clear_status_label: Invalid widgets array\n");
         return G_SOURCE_REMOVE;
     }
@@ -16,60 +19,71 @@ gboolean clear_status_label(gpointer user_data) {
     return G_SOURCE_REMOVE;
 }
 
-gboolean check_login(GtkWidget *entry_user, GtkWidget *entry_pass, GtkWidget *status_label) {
-    if (!entry_user || !entry_pass || !status_label) {
+// Credential verification function
+gboolean verify_credentials(const gchar *username, const gchar *password)
+{
+    GKeyFile *keyfile = g_key_file_new();
+    GError *error = NULL;
+
+    if (!g_key_file_load_from_file(keyfile, "credentials.ini", G_KEY_FILE_NONE, &error))
+    {
+        g_printerr("Error loading credentials: %s\n", error->message);
+        g_error_free(error);
+        return FALSE;
+    }
+
+    // This checks BOTH username existence AND password match
+    gchar *stored_pass = g_key_file_get_string(keyfile, "Users", username, &error);
+
+    gboolean result = (stored_pass && g_strcmp0(password, stored_pass) == 0);
+
+    g_free(stored_pass);
+    g_key_file_free(keyfile);
+    return result;
+}
+
+gboolean check_login(GtkWidget *entry_user, GtkWidget *entry_pass, GtkWidget *status_label)
+{
+    if (!entry_user || !entry_pass || !status_label)
+    {
         g_printerr("check_login: Invalid widget pointers\n");
         return FALSE;
     }
-    GKeyFile *keyfile = g_key_file_new();
-    GError *error = NULL;
-    if (!g_key_file_load_from_file(keyfile, "config.ini", G_KEY_FILE_NONE, &error)) {
-        g_printerr("Failed to load config: %s\n", error->message);
-        g_error_free(error);
-        g_key_file_free(keyfile);
-        return FALSE;
-    }
-    gchar *valid_username = g_key_file_get_string(keyfile, "Credentials", "username", &error);
-    gchar *valid_password = g_key_file_get_string(keyfile, "Credentials", "password", &error);
 
     const gchar *username = gtk_entry_get_text(GTK_ENTRY(entry_user));
     const gchar *password = gtk_entry_get_text(GTK_ENTRY(entry_pass));
     GtkStyleContext *context = gtk_widget_get_style_context(status_label);
 
-    if (g_strcmp0(username, "") == 0 || g_strcmp0(password, "") == 0) {
+    if (g_strcmp0(username, "") == 0 || g_strcmp0(password, "") == 0)
+    {
         gtk_label_set_text(GTK_LABEL(status_label), "Please fill all fields.");
         gtk_style_context_remove_class(context, "success-label");
         gtk_style_context_add_class(context, "error-label");
-        g_free(valid_username);
-        g_free(valid_password);
-        g_key_file_free(keyfile);
         return FALSE;
     }
-    if (g_strcmp0(username, valid_username) == 0 && g_strcmp0(password, valid_password) == 0) {
+    if (verify_credentials(username, password))
+    {
         gtk_label_set_text(GTK_LABEL(status_label), "Login Successful!");
         gtk_style_context_remove_class(context, "error-label");
         gtk_style_context_add_class(context, "success-label");
-        g_free(valid_username);
-        g_free(valid_password);
-        g_key_file_free(keyfile);
         return TRUE;
     }
     gtk_label_set_text(GTK_LABEL(status_label), "Invalid username or password");
     gtk_style_context_remove_class(context, "success-label");
     gtk_style_context_add_class(context, "error-label");
-    g_free(valid_username);
-    g_free(valid_password);
-    g_key_file_free(keyfile);
     return FALSE;
 }
 
-static void on_login_clicked(GtkButton *button, gpointer user_data) {
-    if (!user_data) {
+static void on_login_clicked(GtkButton *button, gpointer user_data)
+{
+    if (!user_data)
+    {
         g_printerr("on_login_clicked: user_data is NULL\n");
         return;
     }
     gpointer *widgets = (gpointer *)user_data;
-    if (!widgets[0] || !widgets[1] || !widgets[2]) {
+    if (!widgets[0] || !widgets[1] || !widgets[2])
+    {
         g_printerr("on_login_clicked: Invalid widgets array\n");
         return;
     }
@@ -83,18 +97,23 @@ static void on_login_clicked(GtkButton *button, gpointer user_data) {
 
     g_print("Username: %s\n", username);
     g_print("Password: %s\n", password);
-    if (success) {
+    if (success)
+    {
         homepage(button);
-    } else {
+    }
+    else
+    {
         g_timeout_add(2000, clear_status_label, widgets);
     }
 }
 
-static void on_login_destroy(GtkWidget *widget, gpointer data) {
+static void on_login_destroy(GtkWidget *widget, gpointer data)
+{
     g_free(data);
 }
 
-GtkWidget *login(void) {
+GtkWidget *login(void)
+{
     GtkWidget *box = gtk_box_new(GTK_ORIENTATION_VERTICAL, 10);
     gtk_widget_set_halign(box, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(box, GTK_ALIGN_CENTER);

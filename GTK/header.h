@@ -3,6 +3,7 @@
 
 #include <gtk/gtk.h>
 #include <pango/pango.h>
+#include <glib/gstdio.h> 
 
 GtkWidget *login();
 gboolean check_login(GtkWidget *entry_user, GtkWidget *entry_pass, GtkWidget *status_label);
@@ -14,5 +15,6 @@ void on_profile_clicked(GtkButton *button, gpointer user_data);
 void edit_profile(GtkMenuItem *item, gpointer data);
 void change_password(GtkMenuItem *item, gpointer data);
 void logout_user(GtkMenuItem *item, gpointer data);
+gboolean verify_credentials(const gchar *username, const gchar *password);
 
 #endif
