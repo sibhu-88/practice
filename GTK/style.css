@@ -1,6 +1,76 @@
+window {
+    background-color: #f0f0f0;
+}
+entry {
+    padding: 10px;
+    margin: 5px;
+}
+button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px;
+    margin: 5px;
+}
+button:hover {
+    background-color: #0056b3;
+}
+.success-label {
+    color: green;
+    font-weight: bold;
+}
+.error-label {
+    color: red;
+    font-weight: bold;
+}
+
 #login-button {
     background: #5e81ac;
     color: white;
     border-radius: 5px;
     padding: 5px 10px;
+}
+
+.menu-button {
+    padding: 5px 10px;
+    margin: 2px;
+    border-radius: 3px;
+}
+
+/* Reduce header bar height */
+headerbar {
+    min-height: 24px;  /* Default is ~56px, reduce as needed */
+    padding: 2px 25px;  /* Compress internal spacing */
+}
+
+/* Style buttons to fit smaller header */
+headerbar button {
+    background-image: none;
+    background-color: #5e81ac;
+    min-height: 24px;
+    min-width: 24px;
+    padding: 0 10px;
+    margin: 0 2px;
+}
+
+/* If using logo image directly in header */
+headerbar image {
+    min-height: 24px;
+    min-width: 24px;
+    padding: 0;
+}
+
+/* Profile button styling */
+button.profile-button {
+    border-radius: 50%;
+    padding: 5px;
+    margin: 0 5px;
+}
+
+/* Menu styling */
+menu {
+    padding: 5px;
+}
+
+menuitem {
+    padding: 5px 20px;
 }

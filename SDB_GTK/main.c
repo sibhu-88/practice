@@ -102,7 +102,7 @@ void on_activate(GtkApplication *app, gpointer user_data)
     gtk_widget_set_hexpand(grid, TRUE);            // allow horizontal expansion
     gtk_widget_set_vexpand(grid, TRUE);            // allow vertical expansion
 
-    //gtk_box_pack_start(GTK_BOX(box), grid, FALSE, TRUE, 10);
+    gtk_box_pack_start(GTK_BOX(box), grid, FALSE, TRUE, 10);
 
     GtkWidget *username = gtk_label_new("User Name:");
     GtkWidget *password = gtk_label_new("Password:");
@@ -131,17 +131,17 @@ void on_activate(GtkApplication *app, gpointer user_data)
     gtk_widget_set_hexpand(entry_pass, TRUE);
     gtk_widget_set_hexpand(login, TRUE);
 
-    // Set vertical expansion for the entries
-    gtk_widget_set_vexpand(entry_user, TRUE);
-    gtk_widget_set_vexpand(entry_pass, TRUE);
+    // // Set vertical expansion for the entries
+    // gtk_widget_set_vexpand(entry_user, TRUE);
+    // gtk_widget_set_vexpand(entry_pass, TRUE);
     
     GtkWidget **widget = g_new(GtkWidget *, 4);
     widget[0] = entry_user;
     widget[1] = entry_pass;
     widget[2] = status;
     widget[3] = box;
-    desktop(box);
-   // g_signal_connect(login, "clicked", G_CALLBACK(on_button_click), widget);
+    //desktop(box);
+   g_signal_connect(login, "clicked", G_CALLBACK(on_button_click), widget);
     gtk_container_add(GTK_CONTAINER(window), box);
     gtk_widget_show_all(window);
 }
