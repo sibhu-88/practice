@@ -99,11 +99,11 @@ static void on_login_clicked(GtkButton *button, gpointer user_data)
     g_print("Password: %s\n", password);
     if (success)
     {
-        homepage(button);
+        g_timeout_add(500, redirect_to_homepage, button);
     }
     else
     {
-        g_timeout_add(2000, clear_status_label, widgets);
+        g_timeout_add(500, clear_status_label, widgets);
     }
 }
 
@@ -125,14 +125,10 @@ GtkWidget *login(void)
     gtk_widget_set_halign(grid, GTK_ALIGN_CENTER);
     gtk_widget_set_valign(grid, GTK_ALIGN_CENTER);
 
-    GtkWidget *title_label = gtk_label_new("Vector India");
+    GtkWidget *title_label = gtk_label_new("Vector India - Login");
     gtk_widget_set_halign(title_label, GTK_ALIGN_CENTER);
-    PangoAttrList *attr_list = pango_attr_list_new();
-    PangoAttribute *attr = pango_attr_weight_new(PANGO_WEIGHT_BOLD);
-    pango_attr_list_insert(attr_list, attr);
-    gtk_label_set_attributes(GTK_LABEL(title_label), attr_list);
-    pango_attr_list_unref(attr_list);
-    gtk_grid_attach(GTK_GRID(grid), title_label, 0, 0, 2, 1);
+    gtk_style_context_add_class(gtk_widget_get_style_context(title_label), "title");
+    gtk_box_pack_start(GTK_BOX(box), title_label, FALSE, FALSE, 0);
 
     GtkWidget *username_label = gtk_label_new("Username:");
     GtkWidget *password_label = gtk_label_new("Password:");
@@ -160,7 +156,8 @@ GtkWidget *login(void)
     gtk_grid_attach(GTK_GRID(grid), password_label, 0, 3, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), password_entry, 1, 3, 1, 1);
     gtk_grid_attach(GTK_GRID(grid), login_button, 0, 4, 2, 1);
-    gtk_grid_attach(GTK_GRID(grid), status_label, 0, 5, 2, 1);
+    // gtk_grid_attach(GTK_GRID(grid), status_label, 0, 5, 2, 1);
+    gtk_box_pack_end(GTK_BOX(box), status_label, FALSE, FALSE, 10);
 
     g_signal_connect(login_button, "clicked", G_CALLBACK(on_login_clicked), widgets);
     g_signal_connect(box, "destroy", G_CALLBACK(on_login_destroy), widgets);

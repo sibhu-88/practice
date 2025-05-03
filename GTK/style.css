@@ -1,23 +1,33 @@
 window {
-    background-color: #f0f0f0;
+    background-color: #fafafa;
 }
+
 entry {
-    padding: 10px;
+    padding: 7px;
     margin: 5px;
 }
+
 button {
     background-color: #007bff;
     color: white;
     padding: 10px;
     margin: 5px;
 }
+
 button:hover {
     background-color: #0056b3;
 }
+
+.default-label {
+    color: red;
+    font-weight: bold;
+}
+
 .success-label {
     color: green;
     font-weight: bold;
 }
+
 .error-label {
     color: red;
     font-weight: bold;
@@ -30,16 +40,51 @@ button:hover {
     padding: 5px 10px;
 }
 
+.title {
+    font-size: 34px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.submit-button {
+    background-image: none;
+    background-color: #4CAF50;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.submit-button:hover {
+    background-color: #759785;
+    border: 5px solid #333333;
+}
+
 .menu-button {
     padding: 5px 10px;
     margin: 2px;
     border-radius: 3px;
 }
 
+label {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+.title_label {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+.project_label {
+    font-size: 46px;
+    font-weight: bold;
+    color: #e45050;
+}
+
 /* Reduce header bar height */
 headerbar {
-    min-height: 24px;  /* Default is ~56px, reduce as needed */
-    padding: 2px 25px;  /* Compress internal spacing */
+    min-height: 20px;
+    padding: 2px 25px;
 }
 
 /* Style buttons to fit smaller header */
@@ -54,7 +99,7 @@ headerbar button {
 
 /* If using logo image directly in header */
 headerbar image {
-    min-height: 24px;
+    min-height: 20px;
     min-width: 24px;
     padding: 0;
 }
@@ -69,8 +114,130 @@ button.profile-button {
 /* Menu styling */
 menu {
     padding: 5px;
+    background-color: #a7cefd;
 }
 
 menuitem {
     padding: 5px 20px;
+}
+
+.header_image {
+    min-width: 300px;
+    min-height: 200px;
+    padding: 10px;
+}
+
+.header_label {
+    font-size: 26px;
+    font-weight: bold;
+    color: #333333;
+    margin: 10px;
+    padding: 10px;
+}
+
+.yes-button {
+    background-image: none;
+    background-color: #3695e9;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.no-button {
+    background-image: none;
+    background-color: #c65667;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.yes-button:hover {
+    background-color: #70acc3;
+}
+
+.no-button:hover {
+    background-color: #d37979;
+}
+
+.ok-button {
+    background-image: none;
+    background-color: #153b5c;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 4px;
+}
+
+.ok-button:hover {
+    background-color: #3b5864;
+}
+
+.record-table {
+    background-image: none;
+    font-size: 14px;
+    color: #070707;
+}
+
+.record-table .header {
+    background-image: none;
+    background-color: #f0f0f0;
+    font-weight: bold;
+    padding: 4px;
+    color: #070707;
+}
+
+/* Style for the student list GtkTreeView */
+treeview#student-list {
+    font-size: 12pt;
+    color: rgb(0, 0, 0);
+}
+
+/* Optional: Style column headers */
+treeview#student-list columnview {
+    font-weight: bold;
+}
+
+/* Optional: Style specific cells */
+treeview#student-list text {
+    color: rgb(0, 0, 0);
+}
+
+.back-button {
+    background-image: none;
+    background-color: #070707;
+    font-weight: bold;
+    color: white;
+}
+
+.back-button:hover {
+    background-color: #252525;
+}
+
+.delete-button {
+    background-image: none;
+    background-color: #070707;
+    border: none;
+    color: #fafafa;
+    padding: 4px;
+}
+
+.delete-button:hover {
+    background-color: #212121;
+}
+
+.info {
+    font-size: 26px;
+    color: #e45050;
+    margin: 10px;
+    padding: 10px;
+    font-style: italic;
+}
+
+.modify-button:hover {
+    background-color: #16737d;
+    border: 5px solid #213030;
+}
+
+.modify-button:hover {
+    background-color: #16737d;
+    border: 5px #213030;
 }
